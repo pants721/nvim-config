@@ -1,0 +1,58 @@
+snippet PyQt5
+alias qt5
+ from PyQt5.QtWidgets import *
+ from PyQt5 import QtCore, QtGui
+ from PyQt5.QtGui import *
+ from PyQt5.QtCore import *
+ import sys
+
+ class Window(QMainWindow):
+
+   def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Python Window")
+        self.setGeometry(100, 100, 600, 400)
+        self.UiComponents()
+        self.show()
+
+   def UiComponents(self):
+        pass
+
+ App = QApplication(sys.argv)
+
+ window = Window()
+ window.show()
+
+ sys.exit(App.exec())
+snippet main
+  from argparse import ArgumentParser, Namespace
+  from asyncio import run
+  from pathlib import Path
+  from sys import exit
+
+  TOP_LEVEL = Path(__file__).resolve().parent
+
+
+  def _parse_args() -> Namespace:
+      parser = ArgumentParser()
+      ${0}
+      return parser.parse_args()
+
+
+  async def main() -> int:
+      args = _parse_args()
+
+      return 0
+
+
+  if __name__ == "__main__":
+      try:
+          code = run(main())
+      except KeyboardInterrupt:
+          exit(130)
+      else:
+          exit(code)
+snippet toplevel
+alias tl
+  TOP_LEVEL = Path(__file__).resolve().parent
