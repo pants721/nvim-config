@@ -29,6 +29,11 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'nanotech/jellybeans.vim'
+Plug 'marko-cerovac/material.nvim'
+
+" Line
+" Plug 'nvim-lualine/lualine.nvim'
+
 
 " Syntax / Lint
 Plug 'Shirk/vim-gas'
@@ -42,9 +47,13 @@ Plug 'mxw/vim-jsx'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'nvim-lua/completion-nvim'
 Plug 'cohama/lexima.vim'
 Plug 'tpope/vim-surround'
-Plug 'romgrk/barbar.nvim'
+" Plug 'romgrk/barbar.nvim'
 Plug 'universal-ctags/ctags'
 Plug 'preservim/tagbar'
 
@@ -78,18 +87,22 @@ Plug 'alvan/vim-closetag'
 Plug 'glepnir/dashboard-nvim'
 Plug 'tpope/vim-commentary'
 Plug 'RRethy/vim-illuminate'
+Plug 'onsails/lspkind-nvim'
+Plug 'L3MON4D3/LuaSnip'
 
 " Random-Deps
 Plug 'liuchengxu/vim-clap'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
 " Color Scheme
-colorscheme gruvbox-material 
+colorscheme material
+let g:material_style = "darker"
 set termguicolors
 set background=dark
 
@@ -122,7 +135,7 @@ function! SetTab(n)
     set expandtab
 endfunction
 
-set laststatus=2
+set laststatus=3
 
 set hlsearch
 set incsearch
@@ -185,55 +198,59 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 
 " Lualine Setup
-lua << EOF
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'auto',
-    component_separators = { left = '', right = ''},
-    --component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    --section_separators = { left = '', right = ''},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {}
-}
-EOF
+" lua << EOF
+" require('lualine').setup {
+"   options = {
+"     icons_enabled = true,
+"     theme = 'auto',
+"     component_separators = { left = '', right = ''},
+"     --component_separators = { left = '', right = ''},
+"     section_separators = { left = '', right = ''},
+"     --section_separators = { left = '', right = ''},
+"     disabled_filetypes = {},
+"     always_divide_middle = true,
+"   },
+"   sections = {
+"     lualine_a = {'mode'},
+"     lualine_b = {'branch', 'diff', 'diagnostics'},
+"     lualine_c = {'filename'},
+"     lualine_x = {'encoding', 'fileformat', 'filetype'},
+"     lualine_y = {'progress'},
+"     lualine_z = {'location'}
+"   },
+"   inactive_sections = {
+"     lualine_a = {},
+"     lualine_b = {},
+"     lualine_c = {'filename'},
+"     lualine_x = {'location'},
+"     lualine_y = {},
+"     lualine_z = {}
+"   },
+"   tabline = {},
+"   extensions = {}
+" }
+" EOF
 
 " barbar binds
-nnoremap <silent>    <C-j> :BufferPrevious<CR>
-nnoremap <silent>    <C-k> :BufferNext<CR>
+nnoremap <silent> <C-j> :tabp<CR>
+nnoremap <silent> <C-k> :tabn<CR>
 
-nnoremap <silent>    <C-u> :BufferMovePrevious<CR>
-nnoremap <silent>    <C-i> :BufferMoveNext<CR>
+nnoremap <silent> <C-u> :tabm -{1}<CR>
+" nnoremap <silent>    <C-j> :BufferPrevious<CR>
+" nnoremap <silent>    <C-k> :BufferNext<CR>
 
-nnoremap <silent>    <C-1> :BufferGoto 1<CR>
-nnoremap <silent>    <C-2> :BufferGoto 2<CR>
-nnoremap <silent>    <C-3> :BufferGoto 3<CR>
-nnoremap <silent>    <C-4> :BufferGoto 4<CR>
-nnoremap <silent>    <C-5> :BufferGoto 5<CR>
-nnoremap <silent>    <C-6> :BufferGoto 6<CR>
-nnoremap <silent>    <C-7> :BufferGoto 7<CR>
-nnoremap <silent>    <C-8> :BufferGoto 8<CR>
-nnoremap <silent>    <C-9> :BufferLast<CR>
+" nnoremap <silent>    <C-u> :BufferMovePrevious<CR>
+" nnoremap <silent>    <C-i> :BufferMoveNext<CR>
+
+" nnoremap <silent>    <C-1> :BufferGoto 1<CR>
+" nnoremap <silent>    <C-2> :BufferGoto 2<CR>
+" nnoremap <silent>    <C-3> :BufferGoto 3<CR>
+" nnoremap <silent>    <C-4> :BufferGoto 4<CR>
+" nnoremap <silent>    <C-5> :BufferGoto 5<CR>
+" nnoremap <silent>    <C-6> :BufferGoto 6<CR>
+" nnoremap <silent>    <C-7> :BufferGoto 7<CR>
+" nnoremap <silent>    <C-8> :BufferGoto 8<CR>
+" nnoremap <silent>    <C-9> :BufferLast<CR>
 
 " barbar options
 " NOTE: If barbar's option dict isn't created yet, create it
@@ -303,4 +320,32 @@ let bufferline.letters =
 " Sets the name of unnamed buffers. By default format is "[Buffer X]"
 " where X is the buffer number. But only a static string is accepted here.
 let bufferline.no_name_title = v:null
+
+
+lua << EOF
+
+require("luasnip.loaders.from_vscode").lazy_load()
+
+local servers = {
+    'pyright',
+    'rust_analyzer',
+    'omnisharp',
+    'ccls'
+    }
+for _, lsp in pairs(servers) do
+    require('lspconfig')[lsp].setup {
+        on_attach = require'completion'.on_attach
+    }
+end
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
+
+EOF
+
 
