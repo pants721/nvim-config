@@ -193,8 +193,8 @@ local servers = {
     'rust_analyzer',
     'omnisharp',
     'ccls',
-		'sumneko_lua',
-		'html'
+	'sumneko_lua',
+	'html'
     }
 for _, lsp in pairs(servers) do
     require('lspconfig')[lsp].setup {
