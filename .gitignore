@@ -1,2 +1,8 @@
-
+init2.lua
+init2.vim
+test.py
+nvum/
+coq-settings.json
+plugged/
+plugin/
 *.yml
